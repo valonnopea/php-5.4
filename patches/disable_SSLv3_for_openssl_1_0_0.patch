@@ -1,0 +1,28 @@
+--- ext/openssl/xp_ssl.c.orig	2019-10-01 16:34:09.448290698 +0300
++++ ext/openssl/xp_ssl.c	2019-10-01 16:32:52.148426470 +0300
+@@ -338,10 +338,12 @@
+ 			method = SSLv2_client_method();
+ 			break;
+ #endif
++#ifndef OPENSSL_NO_SSL2
+ 		case STREAM_CRYPTO_METHOD_SSLv3_CLIENT:
+ 			sslsock->is_client = 1;
+ 			method = SSLv3_client_method();
+ 			break;
++#endif
+ 		case STREAM_CRYPTO_METHOD_TLS_CLIENT:
+ 			sslsock->is_client = 1;
+ 			method = TLSv1_client_method();
+@@ -350,10 +352,12 @@
+ 			sslsock->is_client = 0;
+ 			method = SSLv23_server_method();
+ 			break;
++#ifndef OPENSSL_NO_SSL2
+ 		case STREAM_CRYPTO_METHOD_SSLv3_SERVER:
+ 			sslsock->is_client = 0;
+ 			method = SSLv3_server_method();
+ 			break;
++#endif
+ 		case STREAM_CRYPTO_METHOD_SSLv2_SERVER:
+ #ifdef OPENSSL_NO_SSL2
+ 			php_error_docref(NULL TSRMLS_CC, E_WARNING, "SSLv2 support is not compiled into the OpenSSL library PHP is linked against");
